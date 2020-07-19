@@ -8,10 +8,11 @@ from ..features.build_features import StandardScaler, MinMaxScaler
 class LinearRegressor():
     """Linear regressor"""
 
-    def __init__(self, method='normal_equation', normalize=False, lr=0.01, epochs=1000):
+    def __init__(self, method='normal_equation', normalize=False, lr=0.01, epochs=1000, add_intercept=False):
         assert method in ['normal_equation', 'gradient_descent'], "Method not supported. Supported methods are 'normal_equation' and 'gradient_descent'"
         self.method = method
         self.normalize = normalize
+        self.add_intercept = add_intercept
         self._weights = None
 
         if self.method == 'gradient_descent':
@@ -30,7 +31,8 @@ class LinearRegressor():
             y = self._target_scaler.fit_transform(y)
 
         X = X.to_numpy()
-        X = np.hstack((np.ones((X.shape[0], 1)), X))
+        if self.add_intercept:
+            X = np.hstack((np.ones((X.shape[0], 1)), X))
         y = y.to_numpy()
 
         if self.method == 'normal_equation':
@@ -61,10 +63,11 @@ class LinearRegressor():
         if self.normalize:
             X = self._feature_scaler.transform(X)
 
-        X = X.to_numpy()
-        X = np.hstack((np.ones((X.shape[0], 1)), X))
+        X = X.to_numpy()        
+        if self.add_intercept:
+            X = np.hstack((np.ones((X.shape[0], 1)), X))
+            
         y_pred = np.dot(X, self._weights)
-
         if self.normalize:
             y_pred = self._target_scaler.inverse_transform(y_pred)
 
