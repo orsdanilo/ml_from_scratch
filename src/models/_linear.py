@@ -30,6 +30,7 @@ class LinearRegressor():
             y = self._target_scaler.fit_transform(y)
 
         X = X.to_numpy()
+        X = np.hstack((np.ones((X.shape[0], 1)), X))
         y = y.to_numpy()
 
         if self.method == 'normal_equation':
@@ -61,6 +62,7 @@ class LinearRegressor():
             X = self._feature_scaler.transform(X)
 
         X = X.to_numpy()
+        X = np.hstack((np.ones((X.shape[0], 1)), X))
         y_pred = np.dot(X, self._weights)
 
         if self.normalize:
