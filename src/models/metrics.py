@@ -27,3 +27,20 @@ def mae_score(y_true, y_pred):
 
     mae = np.sum(np.abs(y_pred - y_true) ** 2) / y_true.size
     return mae
+
+def accuracy(y_true, y_pred):
+    """Calculate the accuracy"""
+    
+    acc = (y_true == y_pred).mean()
+    return acc
+
+def recall(y_true, y_pred):
+    """Calculate recall metric"""
+    
+    dict_recall = {}
+    for label in y_pred.unique():
+        tp = y_pred[y_pred == label & y_pred == y_true]
+        tp_fn = y_pred[y_true == label]
+        dict_recall[label] = tp / tp_fn
+        
+    return dict_recall

@@ -42,10 +42,10 @@ class LinearRegressor():
             # mse_new = np.inf
             self._weights = np.zeros(X.shape[1])
             self.cost_history = [0] * self.epochs
-            m = len(y)
 
             for i in range(self.epochs):
-                self._weights = self._weights - (self.lr/m) * np.dot(X.T, np.dot(X, self._weights) - y)
+                grad = np.dot(X.T, np.dot(X, self._weights) - y) / y.shape[0]
+                self._weights = self._weights - self.lr * grad
                 self.cost_history[i] = mse_score(y, np.dot(X, self._weights))
 
             #     if (rmse_new > rmse_old):
@@ -82,7 +82,7 @@ class LinearRegressor():
     def score(self, X, y, metric='r2'):
         """Score the model"""
 
-        assert metric in ['r2', 'rmse'], "Metric not supported. Supported metrics are 'r2', 'mae' and 'rmse'"
+        assert metric in ['r2', 'rmse', 'mae'], "Metric not supported. Supported metrics are 'r2', 'rmse' and 'mae'"
 
         y_pred = self.predict(X)    
         
