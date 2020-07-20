@@ -38,9 +38,9 @@ def recall(y_true, y_pred):
     """Calculate recall metric"""
     
     dict_recall = {}
-    for label in y_pred.unique():
-        tp = y_pred[y_pred == label & y_pred == y_true]
-        tp_fn = y_pred[y_true == label]
+    for label in np.unique(y_pred):
+        tp = len(y_pred[(y_pred == label) & (y_pred == y_true)])
+        tp_fn = len(y_pred[y_true == label])
         dict_recall[label] = tp / tp_fn
         
     return dict_recall
